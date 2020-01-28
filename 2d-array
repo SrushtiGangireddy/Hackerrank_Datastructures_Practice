@@ -1,0 +1,73 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the hourglassSum function below.
+    static int hourglassSum(int[][] arr) {
+        int m = arr.length;
+        int n = arr[0].length;
+
+        int max_sum = Integer.MIN_VALUE;
+
+        for(int i=0;i<m;i++) {
+            for(int j=0;j<n;j++) {
+                if (isHourGlassPossible(i,j,m,n)) {
+                    int temp_sum = arr[i][j] + arr[i][j+1] + arr[i][j+2] + arr[i+1][j+1] + arr[i+2][j] + arr[i+2][j+1] + arr[i+2][j+2];
+                    if (temp_sum > max_sum) {
+                        max_sum = temp_sum;
+                    }
+                }
+            }
+        }
+
+        return max_sum;
+
+    }
+
+    static boolean isHourGlassPossible(int pos_a, int pos_b, int m, int n) {
+        boolean flag = true;
+        if ((pos_b+1 >= n) || (pos_b+2) >= n){
+            flag = false;
+        }
+        if ((pos_a+1) >= m || (pos_b+1) >= n) {
+            flag = false;
+        }
+        if ((pos_a+2) >= m || (pos_b+1) >= n || (pos_b+2) >= n) {
+            flag = false;
+        }
+        return flag;
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int[][] arr = new int[6][6];
+
+        for (int i = 0; i < 6; i++) {
+            String[] arrRowItems = scanner.nextLine().split(" ");
+            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+            for (int j = 0; j < 6; j++) {
+                int arrItem = Integer.parseInt(arrRowItems[j]);
+                arr[i][j] = arrItem;
+            }
+        }
+
+        int result = hourglassSum(arr);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
