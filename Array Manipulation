@@ -10,25 +10,31 @@ public class Solution {
 
     // Complete the arrayManipulation function below.
     static long arrayManipulation(int n, int[][] queries) {
-        int[] arr = new int[n];
-        long max = Integer.MIN_VALUE;
-        for (int[] q: queries) {
+        long[] arr = new long[n+1];
+
+        for(int[] q:queries) {
             int a = q[0];
             int b = q[1];
 
-            int num = q[2];
+            long num = q[2];
 
-            for (int i=a-1;i<=b-1;i++) {
-                arr[i] += num;
-                if (arr[i] > max) {
-                    max = arr[i];
-                }
+            arr[a] += num;
+            if ((b+1) <= n) {
+                arr[b+1] -= num;
             }
-            
+        }
+
+        long max = Integer.MIN_VALUE;
+        long x = 0;
+
+        for(int i=1;i<=n;i++) {
+            x = x + arr[i];
+            if (max < x) {
+                max = x;
+            }
         }
 
         return max;
-
     }
 
     private static final Scanner scanner = new Scanner(System.in);
